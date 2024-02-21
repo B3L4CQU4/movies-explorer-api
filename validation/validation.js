@@ -1,4 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
+const { urlPattern } = require('../config');
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
@@ -11,7 +12,7 @@ const validateCreateUser = celebrate({
 const validateUpdateProfile = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
+    email: Joi.string().email().required(),
   }),
 });
 
@@ -24,7 +25,7 @@ const validateLogin = celebrate({
 
 const validateMovieId = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().integer().required(),
+    movieId: Joi.string().length(24).hex().required(),
   }),
 });
 
@@ -35,9 +36,9 @@ const validateCreateMovie = celebrate({
     duration: Joi.number().integer().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().uri({ allowRelative: false }).pattern(/^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/).required(),
-    trailerLink: Joi.string().uri({ allowRelative: false }).pattern(/^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/).required(),
-    thumbnail: Joi.string().uri({ allowRelative: false }).pattern(/^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/).required(),
+    image: Joi.string().uri({ allowRelative: false }).pattern(urlPattern).required(),
+    trailerLink: Joi.string().uri({ allowRelative: false }).pattern(urlPattern).required(),
+    thumbnail: Joi.string().uri({ allowRelative: false }).pattern(urlPattern).required(),
     movieId: Joi.number().integer().required(),
     nameRU: Joi.string().required(),
     nameEN: Joi.string().required(),

@@ -17,6 +17,11 @@ const {
   validateLogin,
 } = require('./validation/validation');
 const { requestLogger, errorLogger } = require('./logger/logger');
+const {
+  DEV_DB_ADDRESS,
+  CRASH_ERROR,
+  NOT_FOUND,
+} = require('./config');
 
 const { PORT = 3000, DB_ADDRESS } = process.env;
 
@@ -28,7 +33,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 mongoose.connect(
-  process.env.NODE_ENV === 'production' ? DB_ADDRESS : 'mongodb://localhost:27017/bitfilmsdb',
+  process.env.NODE_ENV === 'production' ? DB_ADDRESS : DEV_DB_ADDRESS,
   {
     autoIndex: true,
   },
@@ -36,7 +41,7 @@ mongoose.connect(
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error(CRASH_ERROR);
   }, 0);
 });
 
@@ -53,7 +58,7 @@ app.use(userRouter);
 app.use(moviesRouter);
 
 app.all('*', (req, res, next) => {
-  next(new NotFound('Not Found'));
+  next(new NotFound(NOT_FOUND));
 });
 
 app.use(errorLogger);

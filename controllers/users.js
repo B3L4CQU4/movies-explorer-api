@@ -7,8 +7,13 @@ const User = require('../models/users');
 const NotFound = require('../errors/notFound');
 const AuthError = require('../errors/authError');
 
-const OK_CODE = 200;
-const CREATED_CODE = 201;
+const {
+  OK_CODE,
+  CREATED_CODE,
+  USER_NOT_FOUND,
+  DEV_SECRET,
+  AUTH_ERROR,
+} = require('../config');
 
 const { JWT_SECRET } = process.env;
 
@@ -58,7 +63,7 @@ const updateProfile = async (req, res, next) => {
     );
 
     if (!updatedUser) {
-      throw new NotFound('User not found');
+      throw new NotFound(USER_NOT_FOUND);
     } else {
       res.status(OK_CODE).json(updatedUser);
     }
@@ -74,10 +79,10 @@ const login = async (req, res, next) => {
     const user = await User.findOne({ email }).select({ password: true });
 
     if (user && await bcrypt.compare(password, user.password)) {
-      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? JWT_SECRET : DEV_SECRET);
       res.status(OK_CODE).send({ token });
     } else {
-      throw new AuthError('Invalid email or password');
+      throw new AuthError(AUTH_ERROR);
     }
   } catch (error) {
     next(error);

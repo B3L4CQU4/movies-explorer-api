@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
-const SALT_ROUNDS = 10;
+const { SALT_ROUNDS } = require('../config');
 
 const userSchema = new mongoose.Schema({
   email: {

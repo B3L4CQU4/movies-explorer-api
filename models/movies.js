@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { urlPattern } = require('../config');
+
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
@@ -26,7 +28,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => {
-        const urlRegex = /^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
+        const urlRegex = urlPattern;
         return urlRegex.test(value);
       },
       message: 'Invalid image URL format',
@@ -37,7 +39,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => {
-        const urlRegex = /^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
+        const urlRegex = urlPattern;
         return urlRegex.test(value);
       },
       message: 'Invalid trailer link URL format',
@@ -48,7 +50,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => {
-        const urlRegex = /^(https?:\/\/)?(www\.)?([\w-]+(\.[\w-]+)+\/?)([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
+        const urlRegex = urlPattern;
         return urlRegex.test(value);
       },
       message: 'Invalid thumbnail URL format',
