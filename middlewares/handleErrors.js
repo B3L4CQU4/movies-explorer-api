@@ -7,7 +7,7 @@ const handleErrors = (error, req, res, next) => {
     // Другие ошибки
     const statusCode = error.statusCode || 500;
     const message = statusCode === 500 ? 'На сервере произошла ошибка' : error.message;
-    res.status(statusCode).json({ message, error });
+    res.status(statusCode).json({ message });
   }
 
   next();
