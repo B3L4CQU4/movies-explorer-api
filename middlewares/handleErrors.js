@@ -5,11 +5,9 @@ const handleErrors = (error, req, res, next) => {
     res.status(statusCode).json({ message });
   } else {
     // Другие ошибки
-    // const statusCode = error.statusCode || 500;
-    // const message = statusCode === 500 ? 'На сервере произошла ошибка' : error.message;
-    // res.status(statusCode).json({ message, error });
-    const statusCode = error.statusCode
-    res.status(statusCode).json({ error });
+    const statusCode = error.statusCode || 500;
+    const message = statusCode === 500 ? 'На сервере произошла ошибка' : error.message;
+    res.status(statusCode).json({ message, error });
   }
 
   next();
